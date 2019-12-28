@@ -10,7 +10,7 @@ layer.config({
 $(function() {
     // MetsiMenu
     // $('#side-menu').metisMenu();
-    $("#nav-wrapper").show();
+    $("#nav-wrapper").hide();
 
     $('ul.one').hide();
 
@@ -47,7 +47,7 @@ $(function() {
         function (event) {
             console.log("mouse leave");
             console.log(event.relatedTarget);
-            // $("#nav-wrapper").fadeOut();
+            $("#nav-wrapper").fadeOut();
         }
     );
 
