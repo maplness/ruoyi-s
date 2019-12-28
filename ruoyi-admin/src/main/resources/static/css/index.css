@@ -1,0 +1,36 @@
+
+.sidebar-collapse{
+    z-index: 1000;
+    background-color: transparent;
+}
+.nav{
+    position: relative;
+}
+.one{
+    position: absolute;
+    left: 100%;
+    top : 0;
+}
+.s-nav-wrapper{
+    margin-top: 50px;
+    position: relative;
+    /*background-color: ;*/
+    width: 100%;
+}
+#nav-wrapper li{
+    width: 200px;
+    position: relative;
+    float: none;
+    /*margin-bottom: 1px;*/
+    display: list-item;
+    background-color: #2f4050;
+}
+.nav-second-level{
+    z-index: 1800;
+}
+.nav-third-level{
+    z-index: 1600;
+}
+.nav-fourth-level{
+    z-index: 1400;
+}

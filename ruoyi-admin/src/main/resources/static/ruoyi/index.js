@@ -9,7 +9,11 @@ layer.config({
 
 $(function() {
     // MetsiMenu
-    $('#side-menu').metisMenu();
+    // $('#side-menu').metisMenu();
+    $("#nav-wrapper").hide();
+
+    $('ul.one').hide();
+
 
     //固定菜单栏
     $(function() {
@@ -20,24 +24,67 @@ $(function() {
         });
     });
 
+    //page 全屏
+    // $("#nav-wrapper").css({"position":"relative","left":"-200px"});
+    $("#page-wrapper").css({"margin":"0 0 0 0px"});
+
+    //hover弹出菜单
+
+    $(".navbar-header,#nav-wrapper,#nav-bg,#nav-wrapper ul").hoverDelay({
+        hoverEvent: function () {
+            $('#nav-wrapper li').removeClass("active");
+            $("#nav-wrapper").fadeIn();
+
+            // $("#nav-bg").fadeIn();
+        }
+        ,outEvent: function () {
+            // $("#nav-wrapper").fadeOut();
+            // $("#nav-bg").fadeOut();
+        }}
+    );
+    
+    $("#nav-wrapper").mouseleave(
+        function (event) {
+            console.log("mouse leave");
+            console.log(event.relatedTarget);
+            $("#nav-wrapper").fadeOut();
+        }
+    );
+
+    $(document).click(function(){
+        $("#nav-wrapper").fadeOut();
+    })
+
+
+
+
+    //隐藏和显示菜单
+    $('.nav li').hover(function(){
+        var openMenu= $(this).children('ul.one');
+        $(openMenu).show();
+    },function(){
+        var openMenu= $(this).children('ul.one');
+        $(openMenu).hide();
+    });
+
     // 菜单切换
-    $('.navbar-minimalize').click(function() {
-        $("body").toggleClass("mini-navbar");
-        SmoothlyMenu();
-    });
+    // $('.navbar-minimalize').click(function() {
+    //     $("body").toggleClass("mini-navbar");
+    //     SmoothlyMenu();
+    // });
 
-    $('#side-menu>li').click(function() {
-        if ($('body').hasClass('mini-navbar')) {
-            NavToggle();
-        }
-    });
-    $('#side-menu>li li a').click(function() {
-        if ($(window).width() < 769) {
-            NavToggle();
-        }
-    });
+    // $('#side-menu>li').click(function() {
+    //     if ($('body').hasClass('mini-navbar')) {
+    //         NavToggle();
+    //     }
+    // });
+    // $('#side-menu>li li a').click(function() {
+    //     if ($(window).width() < 769) {
+    //         NavToggle();
+    //     }
+    // });
 
-    $('.nav-close').click(NavToggle);
+    // $('.nav-close').click(NavToggle);
 
     //ios浏览器兼容性处理
     if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
@@ -56,29 +103,29 @@ function() {
     }
 });
 
-function NavToggle() {
-    $('.navbar-minimalize').trigger('click');
-}
-
-function SmoothlyMenu() {
-    if (!$('body').hasClass('mini-navbar')) {
-        $('#side-menu').hide();
-        $(".sidebar-collapse .logo").removeClass("hide");
-        setTimeout(function() {
-            $('#side-menu').fadeIn(500);
-        },
-        100);
-    } else if ($('body').hasClass('fixed-sidebar')) {
-        $('#side-menu').hide();
-        $(".sidebar-collapse .logo").addClass("hide");
-        setTimeout(function() {
-            $('#side-menu').fadeIn(500);
-        },
-        300);
-    } else {
-        $('#side-menu').removeAttr('style');
-    }
-}
+// function NavToggle() {
+//     $('.navbar-minimalize').trigger('click');
+// }
+//
+// function SmoothlyMenu() {
+//     if (!$('body').hasClass('mini-navbar')) {
+//         $('#side-menu').hide();
+//         $(".sidebar-collapse .logo").removeClass("hide");
+//         setTimeout(function() {
+//             $('#side-menu').fadeIn(500);
+//         },
+//         100);
+//     } else if ($('body').hasClass('fixed-sidebar')) {
+//         $('#side-menu').hide();
+//         $(".sidebar-collapse .logo").addClass("hide");
+//         setTimeout(function() {
+//             $('#side-menu').fadeIn(500);
+//         },
+//         300);
+//     } else {
+//         $('#side-menu').removeAttr('style');
+//     }
+// }
 
 /**
  * iframe处理
@@ -592,3 +639,40 @@ $(function() {
         }
     })
 });
+(function($){
+    $.fn.hoverDelay = function(options){
+        var defaults = {
+            // 鼠标经过的延时时间
+            hoverDuring: 200,
+            // 鼠标移出的延时时间
+            outDuring: 500,
+            // 鼠标经过执行的方法
+            hoverEvent: function(){
+                // 设置为空函数，绑定的时候由使用者定义
+                $.noop();
+            },
+            // 鼠标移出执行的方法
+            outEvent: function(){
+                $.noop();
+            }
+        };
+        var sets = $.extend(defaults,options || {});
+        var hoverTimer, outTimer;
+        return $(this).each(function(){
+            // 保存当前上下文的this对象
+            var $this = $(this)
+            $this.hover(function(){
+                clearTimeout(outTimer);
+                hoverTimer = setTimeout(function () {
+                    // 调用替换
+                    sets.hoverEvent.apply($this);
+                }, sets.hoverDuring);
+            }, function(){
+                clearTimeout(hoverTimer);
+                outTimer = setTimeout(function () {
+                    sets.outEvent.apply($this);
+                }, sets.outDuring);
+            });
+        });
+    }
+})(jQuery);
